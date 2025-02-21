@@ -311,6 +311,9 @@ func (c *SimulatedBeacon) Commit() common.Hash {
 
 // Rollback un-sends previously added transactions.
 func (c *SimulatedBeacon) Rollback() {
+	// Run an explicit reset operation to ensure the pool stabilises
+	// before clearing the pending transactions.
+	c.eth.TxPool().Sync()
 	c.eth.TxPool().Clear()
 }
 
